@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Weather App UI</title>
+    <link rel="stylesheet" href="weatherapp.css">
+</head>
+
+<body>
+    <div class="weather-container">
+        <h1>Weather App</h1>
+
+        <div class="search-box">
+            <input type="text" id="inp" value="" placeholder="Search city..." />
+            <button onclick="myFun()">Search</button>
+        </div>
+        <h2 id="city"></h2>
+            <img id="image1" src="clouds.png" alt="">
+
+        <div id="temp"> </div>
+        <div id="condition"></div>
+
+    </div>
+    </div>
+
+    <script>
+        let city = document.getElementById("city");
+        let image = document.getElementById("image1");
+        let temp = document.getElementById("temp");
+        let condition = document.getElementById("condition");
+        let input = document.getElementById("inp");
+        let API_key = "74c3364ccfa05522751a94e5b997977d";
+
+        const data = async function (search) {
+            let getData = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${search}&appid=${API_key}&units=metric`)
+            console.log(getData);
+            let response = await getData.json();
+            console.log(response);
+            console.log(response.name);
+
+            city.innerHTML = response.name;
+            temp.innerHTML = Math.floor(response.main.temp) + "°C";
+            condition.innerHTML = response.weather[0].main;
+
+            if(condition.innerHTML == "Clouds"){
+                image.src="clouds.png";
+            }
+            else if(condition.innerHTML == "Clear"){
+                image.src="clears.png";
+            }
+            else if(condition.innerHTML == "Haze"){
+                image.src="haze.png";
+            }
+            else if(condition.innerHTML == "Rain"){
+                image.src="rain.png";
+            }
+            else if(condition.innerHTML == "Storm"){
+                image.src="strom.png";
+            }
+            input.value="";
+        } 
+        data();
+        function myFun() {
+            search = input.value;
+            data(search);
+        }
+
+
+    </script>
+</body>
+
+</html>
